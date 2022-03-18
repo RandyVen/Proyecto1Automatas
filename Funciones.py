@@ -102,8 +102,7 @@ def infijoAPosfix(expresion,alfabeto):
                 else:
                     pila.append(i)
             elif i == "ʚ":
-            #print "len(pila)"
-            #print len(pila)
+            
                 while (pila[-1] == "+" or pila[-1] == "*" or pila[-1] == "?") :
                     expresionPosfix.append(pila.pop())
                     #print len(pila)
@@ -112,11 +111,10 @@ def infijoAPosfix(expresion,alfabeto):
                 else:
                     pila.append(i)
             elif(i == "|"):
-                #print "len(pila)"
-                #print len(pila)
+                
                 while (pila[-1] == "+" or pila[-1] == "*" or pila[-1] == "?" or pila[-1] == "ʚ"):
                     expresionPosfix.append(pila.pop())
-                    #print len(pila)
+                    
                 if (pila[-1] == "|"):
                     expresionPosfix.append(i)
                 else:
@@ -125,7 +123,7 @@ def infijoAPosfix(expresion,alfabeto):
                 while pila[-1] != "(":
                     expresionPosfix.append(pila.pop())
                 pila.pop()
-        #print(str(pila) + "   " + str(expresionPosfix))
+        
     while len(pila) > 1:
         expresionPosfix.append(pila.pop())
     return expresionPosfix
@@ -160,9 +158,6 @@ def crearArbol(expresionPosfix, alfabeto, operadores, listOfVals):#https://www.d
             leaf.setfirstAndlast()
             if i == "ʚ":
                 listConCat.append(leaf)
-            # print("sim: " + L1.s  + " left: " + str(L1.firstPos()) + " right: " + str(L1.lastPos()))
-            # print("sim: " + leaf.s  + " left: " + str(leaf.firstPos()) + " right: " + str(leaf.lastPos()))
-            # print("sim: " + L2.s  + " left: " + str(L2.firstPos()) + " right: " + str(L2.lastPos()) + "\n")
             
             pila.append(leaf)
         elif( i == "*" or i == "?"):
@@ -185,9 +180,7 @@ def printTree(node, level=0):
             print(' ' * 4 * level + '->', "sim: " + node.s + " left: " + str(node.firstPos()) + " right: " + str(node.lastPos()))
         printTree(node.getRightNode(), level + 1)
 
-# def getFollowPosSet(posnode, ConCatList):
-#     FollowPosList = []
-#     return FollowPosList
+
 
 def getFollowposList(ConCatList):
     FollowPosList = []
@@ -198,16 +191,15 @@ def getFollowposList(ConCatList):
         cantidadDeElementosFirst = len(ConCatList[posnode].rightNode.lastPos())
                 
         listToFollow = ConCatList[posnode].rightNode.lastPos()
-        #print(str(node.rightNode.lastPos()) + " this is right(lastPos) y la cantidad de elementos es: " + str(cantidadDeElementosFirst))
+        
 
         if ConCatList[posnode].rightNode.s == "*" or ConCatList[posnode].rightNode.s == "?" or ConCatList[posnode].rightNode.s == "|":
             listToFollow = listToFollow + ConCatList[posnode].leftNode.lastPos()
             #print(str(listToFollow))
         elif ConCatList[posnode].rightNode.s == "ʚ" and (ConCatList[posnode].leftNode.s == "*" or ConCatList[posnode].leftNode.s == "?" or ConCatList[posnode].leftNode.s == "|"):
-            #print("cado concatenar y kleen")
-            #print(str(ConCatList[posnode+1].leftNode.firstPos()))
+            
             listToFollow =  ConCatList[posnode].leftNode.lastPos() + ConCatList[posnode+1].leftNode.firstPos()
-            #print(str(listToFollow) + " this")
+            
             cantidadDeElementosFirst = len(listToFollow)
             posnode += 1
             #print(str(cantidadDeElementosFirst) + "cantidad concat y kleen")
@@ -216,7 +208,7 @@ def getFollowposList(ConCatList):
             #print(str(listToFollow))
             cantidadDeElementosFirst = len(listToFollow)
                     
-        #print(ConCatList[posnode].getSimbol() + " with left: " + ConCatList[posnode].leftNode.getSimbol() + " and right: " + ConCatList[posnode].rightNode.getSimbol())
+       
 
         #print(cantidadDeElementosFirst)
         #print("\n")
@@ -227,9 +219,6 @@ def getFollowposList(ConCatList):
             FollowPosList.append(listToFollow)
 
             #print(listToFollow)
-
-        #FollowPosList += getFollowPosSet(posnode, ConCatList)
-        #print(FollowPosList)
         posnode +=1
     FollowPosList.append([])
 
@@ -295,13 +284,6 @@ def createDirectAFD(ConCatList, listOfVals, listOfsimbols, FollowPosList):
                             
                         estadoU += followPos(item,listOfVals, FollowPosList)
                         #print(str(estadoU))
-                        #print(str(estadoU) not in Transiciones[str(estado)].values() and sim not in Transiciones[str(estado)] == None)
-                        #print(str(Transiciones[str(estado)].values()))
-                        #print(str(Transiciones[str(estado)].has_key(sim)))
-                        #print(str(estadoU) not in Transiciones[str(estado)].values())
-                        #print(sim not in Transiciones[str(estado)].keys())
-                        #print(Transiciones[str(estado)].get(sim))
-                        #if str(estadoU) not in Transiciones[str(estado)].values() and sim not in Transiciones[str(estado)] != None:
                 if  Transiciones[str(estado)].get(sim) == None:
                     #print("True")
                     Transiciones[str(estado)][sim] = str(estadoU)
@@ -548,7 +530,6 @@ def crearGrafoDelAutomata(Transiciones, name,estadosFinales):
             Grafo = str(Grafo) + str(graph)
     #print(str(name))
     if str(name) == "AFN":
-        #print("aaaaaaaaaa")
         Grafo += str(estadosFinales) + " [ style=bold ]\n"
     Grafo = str(Grafo) + "}"
     #print(Grafo)
@@ -567,12 +548,11 @@ def crearGrafoDFA(Transiciones, name,estadosFinales, traductor):
             if key in estadosFinales and str(name) == "AFD" and str(key) + " [ style=bold ]" not in Grafo:
                 graph += str(traductor[key]) + " [ style=bold ]\n"
             
-            #print(innerKey)
-            #print(Transiciones[key][innerKey])
+            
             Grafo = str(Grafo) + str(graph)
     #print(str(name))
     if str(name) == "AFN":
-        #print("aaaaaaaaaa")
+        
         Grafo += str(estadosFinales) + " [ style=bold ]\n"
     Grafo = str(Grafo) + "}"
     #print(Grafo)
@@ -645,27 +625,23 @@ def SubconjuntosE(transiciones, estadoTrans):
             for i in range(0,len(lista)):
                 listEst.append(lista.pop(0))
                     
-        #print("la lista de transiciones es " + str(listTrans))
-        #print("la lista de estados es " + str(listEst))
+        #print("transiciones es " + str(listTrans))
+        #print("estados es " + str(listEst))
         '''Iniciaremos a revisar las transiciones no epsilon que posee el estado que estamos revisando;
         Para ello tambien necesitamos obtener el tamaño de las transiciones que hay '''
         size = len(listEst)-1
         for x in range(size,-1,-1):
-            #print(str(x))
-            #print("Estamos verificando la transicion " + str(listTrans[x]) + " y el estado " + str(listEst[x]))
+            
             '''Aqui revisamos si la transicion que hay no es epsilon y la sacamos de la lista de transiciones '''
             if(str(listTrans[x][:1]) != "ε"):
                 #print(str(listTrans[x]) + " es algo que no es epsilon")
-                #print("conjuntos esta asi " + str(conjunto))
                 listTrans.pop()
                 listEst.pop()
                 #print("la lista de transiciones es " + str(listTrans))
-                #print("la lista de estados es " + str(listEst))
+
                 #print(str(x))
-                #print("antes de entrar listEst esta asi: " + str(listEst) + " y x es " + str(x))
-                '''En caso de que si sea un epsilon, revisamos si el estado al que apunta ya se encuentra dentro de conjunto
-                Hacemos esto, porque si el estado ya esta dentro de conjunto, entonces quiere decir que ya se reviso dicho estado,
-                por ende, no vale la pena volver a revisarlo'''
+
+              
             elif(listEst[x] in conjunto):
                 #print(str(listEst[x]) + " ya se encuentra dentro de conjutnos")
                 #print("conjuntos esta asi " + str(conjunto))
@@ -702,8 +678,7 @@ def clausuraE1(estados,transiciones):
     #print(str(transiciones))
     '''iniciamos tomando los estados, dentro de la lista de estados del automata y los revisamos todos '''
     for item in estados:
-        '''decimos que estado trans sera igual al estado a revisar, se crea una varialbe para el conjunto de ese estado
-        Tambien creamos una variable que detendra el while cuando termine de hacer su revision'''
+      
         estadoTrans = item
         subconjuntos.append(SubconjuntosE(transiciones, estadoTrans))    
     return subconjuntos
@@ -796,10 +771,7 @@ def clausuraE2(subconjuntos, alfabeto,estadoInicial, automata):
                             
                             listTransiciones.pop()
                             listEstados.pop()
-                            
-                            '''En caso de que si sea un epsilon, revisamos si el estado al que apunta ya se encuentra dentro de conjunto
-                            Hacemos esto, porque si el estado ya esta dentro de conjunto, entonces quiere decir que ya se reviso dicho estado,
-                            por ende, no vale la pena volver a revisarlo'''
+                                          
                         elif(listEstados[x] not in conjunto):
                             
                             conjunto.append(listEstados[x])
@@ -878,11 +850,7 @@ def newStates(subSets, cont = 0):
     #print("Estos son los Estados nuevos para el AFD" + str(TheStates))
     #print(len(TheStates))
     return TheStates
-'''Para esta funcion lo mejor sera el tener que recibir la lista de subconjuntos unicos y los nuevos estados creados.
-Esto porque al usar un array de estados finales, podemos hacer dicho recorrido, pero si detectamos que en
-cierta posicion tal conjunto si posee un estado final de la lista de estados finales, entonces añadimos su valor
-correspondiente dentro de la lista de newStates. Esto porque en la misma posicion del newState, esta el subconjunto
-que corresponde al subconjunto al cual posee algun estado Final. '''
+'''Para esta funcion lo mejor sera el tener que recibir la lista de subconjuntos unicos y los nuevos estados creados. '''
 def newFinalStates2(subSets, newStates, listEstadosFinales):
     #lista de lista correspondiente a cada token con su estado final.
     listFinalStates = []
